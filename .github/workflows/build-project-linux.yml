@@ -21,7 +21,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          ref: main
+          ref: ${{ github.ref }}
 
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
@@ -32,7 +32,7 @@ jobs:
         if: matrix.os == 'ubuntu-20.04'
         run: |
           sudo apt install portaudio19-dev libhamlib-dev libhamlib-utils build-essential cmake python3-libhamlib2
-          python -m pip install --upgrade pip
+          python -m pip install --upgrade pip wheel
           pip3 install pyaudio
           pip3 install psutil
           pip3 install crcengine
@@ -74,7 +74,7 @@ jobs:
       - name: LIST ALL FILES
         shell: bash
         run: |
-          ls -R
+          find .
 
       - name: Compress Linux
         shell: bash
@@ -93,7 +93,7 @@ jobs:
         if: matrix.os == 'ubuntu-20.04'
         run: |
           cp -R ./tnc/dist/tnc ./gui/tnc
-          ls -R
+          find .
 
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
