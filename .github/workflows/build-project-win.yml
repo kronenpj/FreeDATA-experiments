@@ -2,7 +2,8 @@ name: Windows
 on:
   push:
     tags:
-     - 'v*'
+      - "v*"
+  workflow_dispatch:
 
 jobs:
 
@@ -71,11 +72,11 @@ jobs:
       - name: Archive TNC
         uses: thedoctor0/zip-release@master
         with:
-            type: 'zip'
-            filename: '${{ matrix.zip_name }}.zip'
-            directory: ./tnc/dist/tnc
-            path: .
-            #exclusions: '*.git* /*node_modules/* .editorconfig'
+          type: "zip"
+          filename: "${{ matrix.zip_name }}.zip"
+          directory: ./tnc/dist/tnc
+          path: .
+          #exclusions: '*.git* /*node_modules/* .editorconfig'
 
       - name: LIST ALL FILES
         shell: bash
