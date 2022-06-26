@@ -3,6 +3,7 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
 
 jobs:
   build_linux_release:
@@ -60,9 +61,11 @@ jobs:
         working-directory: tnc
         run: |
           git clone https://github.com/drowe67/codec2.git
+          mkdir -p lib/codec2/linux/$(arch)
           cd codec2 && git checkout master && mkdir build_linux && cd build_linux
           cmake ../
           make
+          cp -pv src/libcodec2.so.1.0 ../../lib/codec2/linux/$(arch)/libcodec2.so.1.0
 
       - name: Build Linux Daemon
         if: matrix.os == 'ubuntu-20.04'
