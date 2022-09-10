@@ -155,10 +155,24 @@ let data = null;
 let logViewer = null;
 var daemonProcess = null;
 
+// create a splash screen
+function createSplashScreen(){
+    splashScreen = new BrowserWindow({
+        height: 250,
+        width: 250,
+        transparent: true,
+        frame: false,
+        alwaysOnTop: true
+    });
+    splashScreen.loadFile('src/splash.html');
+    splashScreen.center();
+}
+
 function createWindow() {
     win = new BrowserWindow({
         width: config.screen_width,
         height: config.screen_height,
+        show: false,
         autoHideMenuBar: true,
         icon: 'src/img/icon.png',
         webPreferences: {
@@ -271,7 +285,20 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+    // show splash screen
+    createSplashScreen();
+
+    // create main window
     createWindow();
+
+    // wait some time, then close splash screen and show main windows
+    setTimeout(function() {
+        splashScreen.close();
+        win.show();
+    }, 3000);
+
+
+
 
     // start daemon by checking os
     mainLog.info('Starting freedata-daemon binary');
@@ -738,7 +765,7 @@ function close_sub_processes(){
         mainLog.error(e)
     }
 
-};
+}
 
 
 function close_all() {
