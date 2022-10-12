@@ -801,6 +801,9 @@ class RF:
         # Initialize channel_busy_delay counter
         channel_busy_delay = 0
 
+        # Initialize rms counter
+        rms_counter = 0
+
         while True:
             # time.sleep(0.01)
             threading.Event().wait(0.01)
@@ -830,8 +833,14 @@ class RF:
                     if not static.TRANSMITTING:
                         dfft[dfft > avg + 10] = 100
 
-                        # Calculate audio max value
-                        # static.AUDIO_RMS = np.amax(self.fft_data)
+                        # Calculate audio RMS
+                        # https://stackoverflow.com/a/9763652
+                        # run if rms_counter >= 50 for reducing CPU load
+                        rms_counter += 1
+                        if rms_counter >= 50:
+                            rms_counter = 0
+                            d = np.frombuffer(self.fft_data, np.int16).astype(np.float)
+                            static.AUDIO_RMS = int(np.sqrt((d * d).sum() / len(d)))
 
                     # Check for signals higher than average by checking for "100"
                     # If we have a signal, increment our channel_busy delay counter
