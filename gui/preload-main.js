@@ -208,17 +208,52 @@ set_setting_switch("enable_hamlib_ptt_port", "hamlib_ptt_port", config.enable_ha
     if (config.spectrum == 'waterfall') {
         document.getElementById("waterfall-scatter-switch1").checked = true;
         document.getElementById("waterfall-scatter-switch2").checked = false;
-        document.getElementById("scatter").style.visibility = 'hidden';
+        document.getElementById("waterfall-scatter-switch3").checked = false;
+
         document.getElementById("waterfall").style.visibility = 'visible';
         document.getElementById("waterfall").style.height = '100%';
-    } else {
+
+        document.getElementById("scatter").style.visibility = 'hidden';
+        document.getElementById("scatter").style.height = '0%';
+
+        document.getElementById("graph").style.visibility = 'hidden';
+        document.getElementById("graph").style.height = '0%';
+
+    } else if (config.spectrum == 'scatter') {
 
         document.getElementById("waterfall-scatter-switch1").checked = false;
         document.getElementById("waterfall-scatter-switch2").checked = true;
-        document.getElementById("scatter").style.visibility = 'visible';
+        document.getElementById("waterfall-scatter-switch3").checked = false;
+
         document.getElementById("waterfall").style.visibility = 'hidden';
-        document.getElementById("waterfall").style.height = '0px';
+        document.getElementById("waterfall").style.height = '0%';
+
+        document.getElementById("scatter").style.visibility = 'visible';
+        document.getElementById("scatter").style.height = '100%';
+
+        document.getElementById("graph").style.visibility = 'hidden';
+        document.getElementById("graph").style.height = '0%';
+
+    } else {
+
+        document.getElementById("waterfall-scatter-switch1").checked = false;
+        document.getElementById("waterfall-scatter-switch2").checked = false;
+        document.getElementById("waterfall-scatter-switch3").checked = true;
+
+
+        document.getElementById("waterfall").style.visibility = 'hidden';
+        document.getElementById("waterfall").style.height = '0%';
+
+        document.getElementById("scatter").style.visibility = 'hidden';
+        document.getElementById("scatter").style.height = '0%';
+
+        document.getElementById("graph").style.visibility = 'visible';
+        document.getElementById("graph").style.height = '100%';
     }
+
+
+
+
 
     // radio control element
     if (config.radiocontrol == 'rigctld') {
@@ -690,22 +725,44 @@ document.getElementById('hamlib_rigctld_stop').addEventListener('click', () => {
     // on click waterfall scatter toggle view
     // waterfall
     document.getElementById("waterfall-scatter-switch1").addEventListener("click", () => {
-        document.getElementById("scatter").style.visibility = 'hidden';
         document.getElementById("waterfall").style.visibility = 'visible';
         document.getElementById("waterfall").style.height = '100%';
+
+        document.getElementById("scatter").style.visibility = 'hidden';
+        document.getElementById("scatter").style.height = '0%';
+
+        document.getElementById("graph").style.visibility = 'hidden';
+        document.getElementById("graph").style.height = '0%';
         config.spectrum = 'waterfall';
         fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
     });
     // scatter
     document.getElementById("waterfall-scatter-switch2").addEventListener("click", () => {
-        document.getElementById("scatter").style.visibility = 'visible';
         document.getElementById("waterfall").style.visibility = 'hidden';
-        document.getElementById("waterfall").style.height = '0px';
+        document.getElementById("waterfall").style.height = '0%';
+
+        document.getElementById("scatter").style.visibility = 'visible';
+        document.getElementById("scatter").style.height = '100%';
+
+        document.getElementById("graph").style.visibility = 'hidden';
+        document.getElementById("graph").style.height = '0%';
         config.spectrum = 'scatter';
         fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
     });
 
+    // graph
+    document.getElementById("waterfall-scatter-switch3").addEventListener("click", () => {
+        document.getElementById("waterfall").style.visibility = 'hidden';
+        document.getElementById("waterfall").style.height = '0%';
 
+        document.getElementById("scatter").style.visibility = 'hidden';
+        document.getElementById("scatter").style.height = '0%';
+
+        document.getElementById("graph").style.visibility = 'visible';
+        document.getElementById("graph").style.height = '100%';
+        config.spectrum = 'scatter';
+        fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+    });
 
     // on click remote tnc toggle view
     document.getElementById("local-remote-switch1").addEventListener("click", () => {
